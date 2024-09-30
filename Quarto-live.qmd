@@ -3,7 +3,6 @@ title: "Quarto Live"
 author: "Johannes Zauner"
 format: 
   live-html:
-    self-contained: true
     code-tools: true
 engine: knitr
 webr:
@@ -71,7 +70,9 @@ As you can see above, the import function returns a rich overview of the importe
 
 ```{webr}
 #| exercise: ex_1
-data %>% filter_Date(length = "3 days") %>% gg_day(aes_col = Id, jco_color = TRUE)
+data %>% 
+  filter_Date(length = "3 days") %>% 
+  gg_day(aes_col = Id, jco_color = TRUE)
 ```
 
 ::: { .hint exercise="ex_1"}

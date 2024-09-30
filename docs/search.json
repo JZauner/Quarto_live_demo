@@ -1,0 +1,23 @@
+[
+  {
+    "objectID": "Quarto-live.html",
+    "href": "Quarto-live.html",
+    "title": "Quarto Live",
+    "section": "",
+    "text": "Quarto enables you to weave together content and executable code into a finished document. This document uses a Quarto extension called Quarto live. Quarto live is powered by webR, a webassembly runtime for R. This means that you can run R code directly in your browser, without needing to install R or any other software. Because LightLogR is available on CRAN, the package is automatically built for webR by the R-universe repo.\nPlease note that the code elements are part of one continuous R session. This means that outputs from a codeblock affect downstream blocks."
+  },
+  {
+    "objectID": "Quarto-live.html#preface",
+    "href": "Quarto-live.html#preface",
+    "title": "Quarto Live",
+    "section": "",
+    "text": "Quarto enables you to weave together content and executable code into a finished document. This document uses a Quarto extension called Quarto live. Quarto live is powered by webR, a webassembly runtime for R. This means that you can run R code directly in your browser, without needing to install R or any other software. Because LightLogR is available on CRAN, the package is automatically built for webR by the R-universe repo.\nPlease note that the code elements are part of one continuous R session. This means that outputs from a codeblock affect downstream blocks."
+  },
+  {
+    "objectID": "Quarto-live.html#importing-data",
+    "href": "Quarto-live.html#importing-data",
+    "title": "Quarto Live",
+    "section": "Importing data",
+    "text": "Importing data\nThe first step in every analysis is data import. We will work with data collected as part of the Master Thesis Insights into real-world human light exposure: relating self-report with eye-level light logging by Carolina Guidolin (2023).\nWe start by loading LightLogR and setting up some environmental variables.\nThe data is stored in 2 text files in the LightLogR package. You can access the data yourself through the system.file() function. Run the following code block to see the file names R finds in the package.\n\n\n\n\n\n\n\n\nNext we need to set a time zone where the measurement were taken. If you are unsure about the exact spelling of a time zone, you can use the OlsonNames() function. Try it out in the next code block by removing the # in front of the function call before running the code.\n\n\n\n\n\n\n\n\nLastly, we need a pattern to extract an ID from our file names. This is done through a regular expression. In our case we extract the first part of the file name before the underscore. See what it extracts from the file names by running the following code block. You can also change the pattern to see how it affects the output.\n\n\n\n\n\n\n\n\nNow we are ready for import. As the data was collected by an ActLumus device, the import$ActLumus function does all the necessary work under the hood. We only need to provide the file names, the time zone and the pattern to extract the ID. Try what happens if you don´t provide a time zone or an auto.id argument.\n\n\n\n\n\n\n\n\nAs you can see above, the import function returns a rich overview of the imported data. Let us finish of by a quick visualization of the light exposure in the two Id’s for three whole days worth of data. Can you guess what cyepiamb is measuring? Click at the Show Hint button, if you took your guess. You can also try out how the functions gg_day() and gg_days() differ from each by switching between their names.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ncyepiamb\n\n\n\n\n\nThis is the ambient illuminance outdoors, without any obstructions, measured horizontally at the roof level."
+  }
+]

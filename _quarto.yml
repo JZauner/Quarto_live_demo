@@ -1,5 +1,6 @@
 project:
-  title: "Quarto-live"
-
+  title: "Quarto Live"
+  type: website
+  output-dir: docs
 
 

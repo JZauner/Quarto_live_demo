@@ -1,0 +1,84 @@
+---
+title: "Quarto Live"
+author: "Johannes Zauner"
+format: 
+  live-html:
+    self-contained: true
+    code-tools: true
+engine: knitr
+webr:
+  packages:
+    - LightLogR
+    - tidyverse
+  repos:
+    - https://tscnlab.r-universe.dev
+    - https://cloud.r-project.org
+---
+
+{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+
+## Preface
+
+Quarto enables you to weave together content and executable code into a finished document. This document uses a Quarto extension called [Quarto live](){target="_blank"}. Quarto live is powered by [webR](https://docs.r-wasm.org/webr/latest/){target="_blank"}, a webassembly runtime for R. This means that you can run R code directly in your browser, without needing to install R or any other software. Because **LightLogR** is available on CRAN, the package is automatically built for webR by the [R-universe](https://tscnlab.r-universe.dev){target="_blank"} repo.
+
+*Please note that the code elements are part of one continuous R session. This means that outputs from a codeblock affect downstream blocks.*
+
+## Importing data
+
+The first step in every analysis is data import. We will work with data collected as part of the Master Thesis *Insights into real-world human light exposure: relating self-report with eye-level light logging* by Carolina Guidolin (2023).
+
+We start by loading LightLogR and setting up some environmental variables.
+
+The data is stored in 2 text files in the **LightLogR** package. You can access the data yourself through the `system.file()` function. Run the following code block to see the file names R finds in the package.
+
+```{webr, files}
+#loading the package
+library(LightLogR) 
+#path to the data
+path <- system.file("extdata", 
+              package = "LightLogR")
+#list of files in path
+file.LL <- list.files(path, full.names = TRUE, pattern = ".zip")
+file.LL
+```
+
+Next we need to set a time zone where the measurement were taken. If you are unsure about the exact spelling of a time zone, you can use the `OlsonNames()` function. Try it out in the next code block by removing the # in front of the function call before running the code.
+
+```{webr}
+#first six time zones from OlsonNames()
+#head(OlsonNames())
+#time zone for our measurements
+tz <- "Europe/Berlin" 
+```
+
+Lastly, we need a pattern to extract an ID from our file names. This is done through a `regular expression`. In our case we extract the first part of the file name before the underscore. See what it extracts from the file names by running the following code block. You can also change the pattern to see how it affects the output.
+
+```{webr, code}
+#regular expression to extract the ID from the file name
+pattern <- "^[^_]+" 
+#extracting the ID from the file names
+str_extract(file.LL %>% basename(), pattern)
+```
+
+Now we are ready for import. As the data was collected by an ActLumus device, the import$ActLumus function does all the necessary work under the hood. We only need to provide the file names, the time zone and the pattern to extract the ID. Try what happens if you don´t provide a time zone or an auto.id argument.
+
+```{webr}
+#importing the data
+data <- import$ActLumus(file.LL, tz = tz, auto.id = pattern) 
+```
+
+As you can see above, the import function returns a rich overview of the imported data. Let us finish of by a quick visualization of the light exposure in the two Id's for three whole days worth of data. Can you guess what `cyepiamb` is measuring? Click at the `Show Hint` button, if you took your guess. You can also try out how the functions `gg_day()` and `gg_days()` differ from each by switching between their names.
+
+```{webr}
+#| exercise: ex_1
+data %>% filter_Date(length = "3 days") %>% gg_day(aes_col = Id, jco_color = TRUE)
+```
+
+::: { .hint exercise="ex_1"}
+::: { .callout-note collapse="false"}
+## `cyepiamb`
+
+This is the ambient illuminance outdoors, without any obstructions, measured horizontally at the roof level.
+
+:::
+:::
